@@ -1,0 +1,5 @@
+wc implementation in zig
+
+reads a text file and counts the number of words, lines, and characters in it.
+
+file handling, working with strings, and using loops in Zig.
