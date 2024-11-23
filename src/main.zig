@@ -11,6 +11,11 @@ pub fn main() !void {
     }
 
     const fs = std.fs.cwd();
+
+    var total_lines: usize = 0;
+    var total_words: usize = 0;
+    var total_bytes: usize = 0;
+
     for (args[1..]) |arg| {
         const path: []const u8 = std.mem.span(arg);
 
@@ -33,8 +38,12 @@ pub fn main() !void {
             };
 
             byte_count += 1;
+            total_bytes += 1;
 
-            if (byte == '\n') line_count += 1;
+            if (byte == '\n') {
+                line_count += 1;
+                total_lines += 1;
+            }
 
             if (std.ascii.isWhitespace(byte)) {
                 if (word) {
@@ -43,11 +52,14 @@ pub fn main() !void {
             } else {
                 if (!word) {
                     word_count += 1;
+                    total_words += 1;
                     word = true;
                 }
             }
         }
-
         try stdout.print("{d} {d} {d} {s}\n", .{ line_count, word_count, byte_count, path });
+    }
+    if (args.len > 2) {
+        try stdout.print("{d} {d} {d} total\n", .{ total_lines, total_words, total_bytes });
     }
 }
