@@ -2,12 +2,21 @@ const std = @import("std");
 
 pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
+    const stdin = std.io.getStdIn().reader();
+
+    var buf: [1024]u8 = undefined;
 
     const args = std.os.argv;
 
-    if (args.len == 1) {
-        try stdout.print("usage: filecount <file1> <file2>...\n", .{});
-        return;
+    // check if user presses enter
+    while (true) {
+        const line = try stdin.readUntilDelimiterOrEof(&buf, '\n');
+        // TODO: add this to a buffer then switch over args.
+        if (line) |text| {
+            std.debug.print("{s}\n", .{text});
+        } else {
+            break;
+        }
     }
 
     const fs = std.fs.cwd();
